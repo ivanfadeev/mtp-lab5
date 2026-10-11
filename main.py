@@ -4,6 +4,11 @@
 """
 
 import argparse
+import sys
+
+from PyQt6.QtWidgets import QApplication
+
+from gui_lab.widgets.main_window import MainWindow
 
 APP_NAME = "lab5"
 APP_VERSION = "1.0.0"
@@ -23,10 +28,15 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: list[str] | None = None) -> None:
-    """Разобрать аргументы командной строки."""
+def main(argv: list[str] | None = None) -> int:
+    """Запустить приложение и вернуть код завершения цикла событий."""
     build_parser().parse_args(argv)
+    app = QApplication.instance() or QApplication(sys.argv[:1])
+    window = MainWindow(version=APP_VERSION)
+    window.resize(560, 560)
+    window.show()
+    return app.exec()
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
